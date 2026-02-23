@@ -7,21 +7,25 @@ from utils.config import BASE_URL
 
 
 class TestConstructor:
+    def test_buns_tab_is_active_by_default(self, driver):
+        driver.get(BASE_URL)
+
+        wait = WebDriverWait(driver, 10)
+        assert wait.until(
+            EC.visibility_of_element_located(ConstructorPage.BUNS_HEADER)
+        )
 
     @pytest.mark.parametrize(
-        "tab, active_tab",
+        "tab, header",
         [
-            (ConstructorPage.SAUCES, ConstructorPage.ACTIVE_TAB_SAUCES),
-            (ConstructorPage.FILLINGS, ConstructorPage.ACTIVE_TAB_FILLINGS),
-            (ConstructorPage.BUNS, ConstructorPage.ACTIVE_TAB_BUNS),
-        ]
+            (ConstructorPage.SAUCES, ConstructorPage.SAUCES_HEADER),
+            (ConstructorPage.FILLINGS, ConstructorPage.FILLINGS_HEADER),
+        ],
     )
-    def test_constructor_tabs(self, driver, tab, active_tab):
+    def test_constructor_tabs_switching(self, driver, tab, header):
         driver.get(BASE_URL)
 
         wait = WebDriverWait(driver, 10)
         wait.until(EC.element_to_be_clickable(tab)).click()
 
-        assert wait.until(
-            EC.visibility_of_element_located(active_tab)
-        )
+        assert wait.until(EC.visibility_of_element_located(header))

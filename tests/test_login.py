@@ -7,14 +7,15 @@ from utils.helpers import login
 
 
 class TestLogin:
-
     def test_login_from_main_page(self, driver):
         driver.get(BASE_URL)
         driver.find_element(*MainPage.LOGIN_BUTTON).click()
 
         login(driver)
 
-        assert "/login" not in driver.current_url
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPage.PERSONAL_ACCOUNT)
+        )
 
     def test_login_from_personal_account(self, driver):
         driver.get(BASE_URL)
@@ -22,7 +23,9 @@ class TestLogin:
 
         login(driver)
 
-        assert "/login" not in driver.current_url
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPage.PERSONAL_ACCOUNT)
+        )
 
     def test_login_from_registration_page(self, driver):
         driver.get(f"{BASE_URL}/register")
@@ -30,7 +33,9 @@ class TestLogin:
 
         login(driver)
 
-        assert "/login" not in driver.current_url
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPage.PERSONAL_ACCOUNT)
+        )
 
     def test_login_from_forgot_password_page(self, driver):
         driver.get(f"{BASE_URL}/forgot-password")
@@ -38,4 +43,6 @@ class TestLogin:
 
         login(driver)
 
-        assert "/login" not in driver.current_url
+        assert WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(MainPage.PERSONAL_ACCOUNT)
+        )
